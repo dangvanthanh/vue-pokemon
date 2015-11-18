@@ -4,7 +4,7 @@ An [Vue.js](http://vuejs.org/) example for displaying Pokemon.
 Based on an [AngularJS Directive](http://plnkr.co/edit/xfRpUhIjGTC7g4Pi75kj?p=preview)
 by [Brian Ford](https://github.com/btford).
 
-## [Demo](https://passy.github.io/elm-pokemon)
+## [Demo](http://output.jsbin.com/hiseya/2)
 
 ## Building
 
