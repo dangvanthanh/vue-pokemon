@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vue.js Pokemon</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="pokemon">
+        <div>
+            <img v-bind:src="pokemonImg" alt="">
+        </div>
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="vue-pokemon.js"></script>
+</body>
+</html>
