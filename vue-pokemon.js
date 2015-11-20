@@ -4,8 +4,10 @@ var app = new Vue({
         pokemon: 'pikachu'
     },
     computed: {
-        pokemonImg: function() {
-            return 'http://img.pokemondb.net/artwork/' + this.pokemon.toLowerCase() + '.jpg';
+        pokemonImg: {
+            get: function() {
+                return 'http://img.pokemondb.net/artwork/' + this.pokemon.toLowerCase() + '.jpg';
+            }
         }
     }
 });
