@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Vue.js Pokemon</title>
+  <link rel="stylesheet" href="pokemon.css">
 </head>
 <body>
-    <div id="app">
-        <input type="text" v-model="pokemon">
-        <div>
-            <img v-bind:src="pokemonImg" alt="">
-        </div>
-    </div>
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="vue-pokemon.js"></script>
+	<div class="app">
+		<pokemon></pokemon>
+	</div>
+	<script src="https://vuejs.org/js/vue.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/vue.resource/0.9.3/vue-resource.min.js"></script>
+  <script src="bundle.js"></script>
 </body>
 </html>

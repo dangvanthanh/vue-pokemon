@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "http-server",
+    "watch": "rollup -c -w",
+    "dev": "npm-run-all --parallel serve watch"
   },
   "repository": {
     "type": "git",
@@ -15,12 +17,24 @@
     "vue.js"
   ],
   "author": "Dang Van Thanh",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dangvanthanh/vue-pokemon/issues"
   },
   "homepage": "https://github.com/dangvanthanh/vue-pokemon",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "http-server": "^0.9.0",
+    "npm-run-all": "^2.3.0",
+    "rollup": "^0.34.7",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^3.3.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-vue": "^2.0.1",
+    "vue": "^1.0.26",
+    "vue-resource": "^0.9.3"
+  },
   "dependencies": {
-    "vue": "^1.0.8"
+    "rollup-watch": "^2.5.0"
   }
 }

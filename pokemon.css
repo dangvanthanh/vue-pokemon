@@ -1,0 +1,30 @@
+*,
+*:before,
+*:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.pokedex {
+	max-width: 65em;
+	margin: 0 auto;
+}
+
+.pokedex:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.pokemon {
+	display: block;
+	float: left;
+	position: relative;
+	margin: 0 0.78125% 50px;
+	width: 23.4375%;
+}
+
+.u-text-center {
+	text-align: center;
+}
