@@ -1,6 +1,6 @@
 # vue-pokemon
 
-Pokedex pokemon using Vue.js
+Pokedex using Vue.js
 
 ## Building
 
