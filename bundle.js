@@ -37,8 +37,8 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 	ready: function ready () {
 		var self = this
 
-		if (!!localStorage.getItem('pokemon')) {
-			var pokemon = JSON.parse(localStorage.getItem('pokemon'))
+		if (!!localStorage.getItem('v1::local::pokemon')) {
+			var pokemon = JSON.parse(localStorage.getItem('v1::local::pokemon'))
 			self.pokemon = pokemon
 			self.pokemonTemp = pokemon
 		} else {
@@ -59,9 +59,11 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 		updatePokemonSwatches: function updatePokemonSwatches (pokemon) {
 			this.pokemon = pokemon
 			this.pokemonTemp = pokemon
-			localStorage.setItem('pokemon', JSON.stringify(pokemon))
+			localStorage.setItem('v1::local::pokemon', JSON.stringify(pokemon))
 		},
 		getSwatches: function getSwatches (pokemon) {
+			var self = this
+
 			return new Promise(function (resolve, reject) {
 				var swatchesList = [];
 				var pokemonData = pokemon
@@ -80,6 +82,8 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 								break;
 							}
 						}
+
+						pokemonData[i].sprite = self.getDataUriImage(img)
 
 						pokemonDataLength--
 
@@ -104,6 +108,17 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 || p.id.toString().indexOf(pokemonSearchTerm) > -1 || p.id == pokemonSearchTerm
 				})
 			}
+		},
+		getDataUriImage: function getDataUriImage (img) {
+			var canvas = document.createElement('canvas')
+			var ctx = canvas.getContext('2d')
+
+			canvas.width = img.width
+			canvas.height = img.height
+
+			ctx.drawImage(img, 0, 0, img.width, img.height)
+
+			return canvas.toDataURL()
 		}
 	}
 }

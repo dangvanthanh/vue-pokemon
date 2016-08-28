@@ -2,6 +2,8 @@
 
 Pokedex using Vue.js
 
+![](screenshot.png)
+
 ## Building
 
 ```

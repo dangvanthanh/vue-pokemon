@@ -30,8 +30,8 @@ export default {
 	ready () {
 		var self = this
 
-		if (!!localStorage.getItem('pokemon')) {
-			let pokemon = JSON.parse(localStorage.getItem('pokemon'))
+		if (!!localStorage.getItem('v1::local::pokemon')) {
+			let pokemon = JSON.parse(localStorage.getItem('v1::local::pokemon'))
 			self.pokemon = pokemon
 			self.pokemonTemp = pokemon
 		} else {
@@ -52,9 +52,11 @@ export default {
 		updatePokemonSwatches (pokemon) {
 			this.pokemon = pokemon
 			this.pokemonTemp = pokemon
-			localStorage.setItem('pokemon', JSON.stringify(pokemon))
+			localStorage.setItem('v1::local::pokemon', JSON.stringify(pokemon))
 		},
 		getSwatches (pokemon) {
+			var self = this
+
 			return new Promise(function (resolve, reject) {
 				let swatchesList = [];
 				let pokemonData = pokemon
@@ -73,6 +75,8 @@ export default {
 								break;
 							}
 						}
+
+						pokemonData[i].sprite = self.getDataUriImage(img)
 
 						pokemonDataLength--
 
@@ -97,6 +101,17 @@ export default {
 					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 || p.id.toString().indexOf(pokemonSearchTerm) > -1 || p.id == pokemonSearchTerm
 				})
 			}
+		},
+		getDataUriImage (img) {
+			let canvas = document.createElement('canvas')
+			let ctx = canvas.getContext('2d')
+
+			canvas.width = img.width
+			canvas.height = img.height
+
+			ctx.drawImage(img, 0, 0, img.width, img.height)
+
+			return canvas.toDataURL()
 		}
 	}
 }
