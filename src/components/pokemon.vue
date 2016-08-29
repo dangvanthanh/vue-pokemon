@@ -1,7 +1,7 @@
 <template>
-	<div class="pokemons">
-		<div class="search">
-			<input type="text" name="name" class="search__textfield" placeholder="Search by name or number" v-model="pokemonTerm" v-on:keyup="searchPokemon">
+	<div class="pokemons" v-if="isLoadingPokeball">
+		<div class="pokemon__search">
+			<input type="text" name="name" class="pokemon__search-textfield" placeholder="Search by name or number" v-model="pokemonTerm" v-on:keyup="searchPokemon">
 		</div>
 		<div class="pokemon" v-for="p in pokemon">
 			<figure class="pokemon__sprite" v-bind:style="{ backgroundColor: p.swatches }">
@@ -13,11 +13,15 @@
 			</div>
 		</div>
 	</div>
+	<div class="pokemons-loading" v-if="!isLoadingPokeball">
+		<div class="pokeball">
+			<div class="pokeball__button"></div>
+		</div>
+	</div>
 </template>
 
 <script>
-import PokemonService from './pokemon.service'
-import VueFilter from './pokemon.filter'
+import PokemonService from './pokemon-service'
 
 export default {
   data () {
@@ -27,6 +31,11 @@ export default {
 			pokemonTerm: ''
     }
   },
+	computed: {
+		isLoadingPokeball () {
+			return this.pokemonTemp.length > 0
+		}
+	},
 	ready () {
 		var self = this
 
@@ -66,16 +75,7 @@ export default {
 					let img = new Image()
 
 					img.onload = function () {
-						var vibrant = new Vibrant(img)
-						var swatches = vibrant.swatches()
-
-						for (var swatch in swatches) {
-							if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
-								pokemonData[i].swatches = swatches[swatch].getHex()
-								break;
-							}
-						}
-
+						pokemonData[i].swatches = self.getDataSwatchImage(img)
 						pokemonData[i].sprite = self.getDataUriImage(img)
 
 						pokemonDataLength--
@@ -112,6 +112,20 @@ export default {
 			ctx.drawImage(img, 0, 0, img.width, img.height)
 
 			return canvas.toDataURL()
+		},
+		getDataSwatchImage (img) {
+			let swatchColor = ''
+			let vibrant = new Vibrant(img)
+			let swatches = vibrant.swatches()
+
+			for (var swatch in swatches) {
+				if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
+					swatchColor = swatches[swatch].getHex()
+					break;
+				}
+			}
+
+			return swatchColor
 		}
 	}
 }
@@ -132,6 +146,7 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	line-height: 1.5;
+	margin: 0;
 }
 
 .pokemons {
@@ -143,6 +158,13 @@ body {
 	content: "";
 	display: table;
 	clear: both;
+}
+
+.pokemons-loading {
+	background: rgba(0, 0, 0, .9);
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 .pokemon {
@@ -186,11 +208,11 @@ body {
 	font-size: 16px;
 }
 
-.search {
+.pokemon__search {
 	margin: 1.5625% 0.78125%;
 }
 
-.search__textfield {
+.pokemon__search-textfield {
 	padding: 0.78125% 1.5625%;
 	border-radius: 5px;
 	background: #c8d2d9;
@@ -199,14 +221,68 @@ body {
 	width: 100%;
 }
 
-.search__textfield:hover,
-.search__textfield:focus {
+.pokemon__search-textfield:hover,
+.pokemon__search-textfield:focus {
 	outline: 0;
+}
+
+.pokeball,
+.pokeball__button {
+	border-radius: 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
+
+.pokeball {
+	background-image: linear-gradient(to bottom, tomato 50%, #333 50%, #333 55%, #eee 55%);
+	display: inline-block;
+	border: 1px solid #ccc;
+	width: 150px;
+	height: 150px;
+	animation: 1s rotate infinite;
+	-webkit-animation: 1s rotate infinite;
+	margin-left: -75px;
+	margin-top: -75px;
+}
+
+.pokeball__button {
+	background: #ccc;
+	border: 1px solid #ddd;
+	width: 20px;
+	height: 20px;
+	box-shadow: 0 0 0 5px #eee, 0 0 0 15px #333;
 }
 
 @media screen and (max-width: 768px) {
 	.pokemon {
 		width: 48.4375%;
+	}
+}
+
+@-webkit-keyframes rotate {
+  from, to {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+	to {
+		-webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+	}
+}
+
+@keyframes rotate {
+	from, to {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+	to {
+		-webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
 	}
 }
 </style>

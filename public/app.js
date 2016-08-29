@@ -18,15 +18,7 @@ PokemonService.prototype.getPokemon = function getPokemon (offset, limit) {
     }); })
   };
 
-Vue.filter('capitalize', function (value) {
-  return value.charAt(0).toUpperCase() + value.substr(1)
-})
-
-Vue.filter('zeros', function (number) {
-	return ('00' + number).slice(-3)
-})
-
-var Pokemon = { template: "<div class=pokemons><div class=search><input type=text name=name class=search__textfield placeholder=\"Search by name or number\" v-model=pokemonTerm v-on:keyup=searchPokemon></div><div class=pokemon v-for=\"p in pokemon\"><figure class=pokemon__sprite v-bind:style=\"{ backgroundColor: p.swatches }\"><img v-bind:src=p.sprite></figure><div class=pokemon__content><p class=pokemon__id>{{ p.id | zeros }}<h2 class=pokemon__name>{{ p.name | capitalize }}</h2></div></div></div>",
+var Pokemon = { template: "<div class=pokemons v-if=isLoadingPokeball><div class=pokemon__search><input type=text name=name class=pokemon__search-textfield placeholder=\"Search by name or number\" v-model=pokemonTerm v-on:keyup=searchPokemon></div><div class=pokemon v-for=\"p in pokemon\"><figure class=pokemon__sprite v-bind:style=\"{ backgroundColor: p.swatches }\"><img v-bind:src=p.sprite></figure><div class=pokemon__content><p class=pokemon__id>{{ p.id | zeros }}<h2 class=pokemon__name>{{ p.name | capitalize }}</h2></div></div></div><div class=pokemons-loading v-if=!isLoadingPokeball><div class=pokeball><div class=pokeball__button></div></div></div>",
   data: function data () {
     return {
 			pokemon: [],
@@ -34,6 +26,11 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 			pokemonTerm: ''
     }
   },
+	computed: {
+		isLoadingPokeball: function isLoadingPokeball () {
+			return this.pokemonTemp.length > 0
+		}
+	},
 	ready: function ready () {
 		var self = this
 
@@ -73,16 +70,7 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 					var img = new Image()
 
 					img.onload = function () {
-						var vibrant = new Vibrant(img)
-						var swatches = vibrant.swatches()
-
-						for (var swatch in swatches) {
-							if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
-								pokemonData[i].swatches = swatches[swatch].getHex()
-								break;
-							}
-						}
-
+						pokemonData[i].swatches = self.getDataSwatchImage(img)
 						pokemonData[i].sprite = self.getDataUriImage(img)
 
 						pokemonDataLength--
@@ -119,9 +107,34 @@ var Pokemon = { template: "<div class=pokemons><div class=search><input type=tex
 			ctx.drawImage(img, 0, 0, img.width, img.height)
 
 			return canvas.toDataURL()
+		},
+		getDataSwatchImage: function getDataSwatchImage (img) {
+			var swatchColor = ''
+			var vibrant = new Vibrant(img)
+			var swatches = vibrant.swatches()
+
+			for (var swatch in swatches) {
+				if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
+					swatchColor = swatches[swatch].getHex()
+					break;
+				}
+			}
+
+			return swatchColor
 		}
 	}
 }
+
+function capitalize (value) {
+  return value.charAt(0).toUpperCase() + value.substr(1)
+}
+
+function zeros (number) {
+  return ('00' + number).slice(-3)
+}
+
+Vue.filter('capitalize', capitalize)
+Vue.filter('zeros', zeros)
 
 var app = new Vue({
   el: 'body',

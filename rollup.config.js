@@ -7,7 +7,7 @@ export default {
   entry: './src/app.js',
   plugins: [
     vue({
-      css: './bundle.css'
+      css: './public/app.css'
     }),
     buble(),
     nodeResolve({
@@ -17,5 +17,5 @@ export default {
       include: 'node_modules/**'
     })
   ],
-  dest: './bundle.js'
+  dest: './public/app.js'
 }

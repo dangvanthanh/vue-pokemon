@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "http-server",
-    "watch": "rollup -c -w",
-    "dev": "npm-run-all --parallel serve watch"
+    "serve": "live-server --open=public",
+    "watch:js": "rollup -c -w",
+    "dev": "npm-run-all --parallel serve watch:js"
   },
   "repository": {
     "type": "git",
@@ -23,17 +23,13 @@
   },
   "homepage": "https://github.com/dangvanthanh/vue-pokemon",
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^1.2.0",
-    "http-server": "^0.9.0",
+    "live-server": "^1.1.0",
     "npm-run-all": "^2.3.0",
     "rollup": "^0.34.10",
-    "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-buble": "^0.13.0",
     "rollup-plugin-commonjs": "^3.3.1",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-vue": "^2.1.0",
-    "vue": "^1.0.26",
-    "vue-resource": "^0.9.3"
+    "rollup-plugin-vue": "^2.1.0"
   },
   "dependencies": {
     "rollup-watch": "^2.5.0"
