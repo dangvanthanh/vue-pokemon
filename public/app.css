@@ -109,8 +109,8 @@ body {
 	border: 1px solid #ccc;
 	width: 150px;
 	height: 150px;
-	animation: 1s rotate infinite;
-	-webkit-animation: 1s rotate infinite;
+	animation: 1s rotate infinite linear;
+	-webkit-animation: 1s rotate infinite linear;
 	margin-left: -75px;
 	margin-top: -75px;
 }

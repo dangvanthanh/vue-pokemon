@@ -1,22 +1,34 @@
-var PokemonService = function PokemonService () {};
+var PokemonService = {
+  getPokemon: function getPokemon(offset, limit) {
+    var baseUrl = 'https://pokeapi.co/api/v2/pokemon/'
+    var baseSpriteUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
 
-PokemonService.prototype.getPokemon = function getPokemon (offset, limit) {
-  var baseUrl = 'https://pokeapi.co/api/v2/pokemon/'
-  var baseSpriteUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
+    return Vue.http.get((baseUrl + "?offset=" + offset + "&limit=" + limit))
+      .then(function (response) { return response.json(); })
+      .then(function (response) { return response.results; })
+      .then(function (items) { return items.map(function (item, idx) {
+        var id = idx + offset + 1
 
-  return fetch((baseUrl + "?offset=" + offset + "&limit=" + limit))
-    .then(function (response) { return response.json(); })
-			.then(function (response) { return response.results; })
-    .then(function (items) { return items.map(function (item, idx) {
-      var id = idx + offset + 1
+        return {
+          id: id,
+          name: item.name,
+          sprite: ("" + baseSpriteUrl + id + ".png")
+        }
+      }); })
+  }
+}
 
-      return {
-        id: id,
-        name: item.name,
-        sprite: ("" + baseSpriteUrl + id + ".png")
-      }
-    }); })
-  };
+var store = window.localStorage
+var pokemonStoreLocal = 'v1::local::pokemon'
+
+var PokemonStore = {
+  getPokemon: function getPokemon () {
+    return store.getItem(pokemonStoreLocal)
+  },
+  setPokemon: function setPokemon (pokemon) {
+    store.setItem(pokemonStoreLocal, pokemon)
+  }
+}
 
 var Pokemon = { template: "<div class=pokemons v-if=isLoadingPokeball><div class=pokemon__search><input type=text name=name class=pokemon__search-textfield placeholder=\"Search by name or number\" v-model=pokemonTerm v-on:keyup=searchPokemon></div><div class=pokemon v-for=\"p in pokemon\"><figure class=pokemon__sprite v-bind:style=\"{ backgroundColor: p.swatches }\"><img v-bind:src=p.sprite></figure><div class=pokemon__content><p class=pokemon__id>{{ p.id | zeros }}<h2 class=pokemon__name>{{ p.name | capitalize }}</h2></div></div></div><div class=pokemons-loading v-if=!isLoadingPokeball><div class=pokeball><div class=pokeball__button></div></div></div>",
   data: function data () {
@@ -34,8 +46,8 @@ var Pokemon = { template: "<div class=pokemons v-if=isLoadingPokeball><div class
 	ready: function ready () {
 		var self = this
 
-		if (!!localStorage.getItem('v1::local::pokemon')) {
-			var pokemon = JSON.parse(localStorage.getItem('v1::local::pokemon'))
+		if (!!PokemonStore.getPokemon()) {
+			var pokemon = JSON.parse(PokemonStore.getPokemon())
 			self.pokemon = pokemon
 			self.pokemonTemp = pokemon
 		} else {
@@ -45,10 +57,9 @@ var Pokemon = { template: "<div class=pokemons v-if=isLoadingPokeball><div class
   methods: {
 		getAllPokemon: function getAllPokemon () {
 			var self = this
-			var pokemonService = new PokemonService()
 			var currentPokemon = 721
 
-			pokemonService
+			PokemonService
 				.getPokemon(0, currentPokemon)
 				.then(self.getSwatches)
 				.then(self.updatePokemonSwatches)
@@ -56,7 +67,7 @@ var Pokemon = { template: "<div class=pokemons v-if=isLoadingPokeball><div class
 		updatePokemonSwatches: function updatePokemonSwatches (pokemon) {
 			this.pokemon = pokemon
 			this.pokemonTemp = pokemon
-			localStorage.setItem('v1::local::pokemon', JSON.stringify(pokemon))
+			PokemonStore.setPokemon(JSON.stringify(pokemon))
 		},
 		getSwatches: function getSwatches (pokemon) {
 			var self = this

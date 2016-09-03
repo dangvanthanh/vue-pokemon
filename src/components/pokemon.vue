@@ -22,6 +22,7 @@
 
 <script>
 import PokemonService from './pokemon-service'
+import PokemonStore from './pokemon-store'
 
 export default {
   data () {
@@ -39,8 +40,8 @@ export default {
 	ready () {
 		var self = this
 
-		if (!!localStorage.getItem('v1::local::pokemon')) {
-			let pokemon = JSON.parse(localStorage.getItem('v1::local::pokemon'))
+		if (!!PokemonStore.getPokemon()) {
+			let pokemon = JSON.parse(PokemonStore.getPokemon())
 			self.pokemon = pokemon
 			self.pokemonTemp = pokemon
 		} else {
@@ -50,10 +51,9 @@ export default {
   methods: {
 		getAllPokemon () {
 			let self = this
-			let pokemonService = new PokemonService()
 			let currentPokemon = 721
 
-			pokemonService
+			PokemonService
 				.getPokemon(0, currentPokemon)
 				.then(self.getSwatches)
 				.then(self.updatePokemonSwatches)
@@ -61,7 +61,7 @@ export default {
 		updatePokemonSwatches (pokemon) {
 			this.pokemon = pokemon
 			this.pokemonTemp = pokemon
-			localStorage.setItem('v1::local::pokemon', JSON.stringify(pokemon))
+			PokemonStore.setPokemon(JSON.stringify(pokemon))
 		},
 		getSwatches (pokemon) {
 			var self = this
@@ -242,8 +242,8 @@ body {
 	border: 1px solid #ccc;
 	width: 150px;
 	height: 150px;
-	animation: 1s rotate infinite;
-	-webkit-animation: 1s rotate infinite;
+	animation: 1s rotate infinite linear;
+	-webkit-animation: 1s rotate infinite linear;
 	margin-left: -75px;
 	margin-top: -75px;
 }
