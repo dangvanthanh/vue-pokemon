@@ -237,23 +237,27 @@ body {
 }
 
 .pokeball {
-	background-image: linear-gradient(to bottom, tomato 50%, #333 50%, #333 55%, #eee 55%);
+	/*background-image: linear-gradient(to bottom, #e62e34 48%, #343434 48%, #343434 54%, #cecece 54%);*/
+	background-color: #e62e34;
 	display: inline-block;
-	border: 1px solid #ccc;
+	border: 8px solid #343434;
 	width: 150px;
 	height: 150px;
-	animation: 1s rotate infinite linear;
-	-webkit-animation: 1s rotate infinite linear;
+	animation: 1s wiggle infinite ease-in-out;
+	-webkit-animation: 1s wiggle infinite ease-in-out;
 	margin-left: -75px;
 	margin-top: -75px;
+	box-shadow: inset 0 -97px 0 -40px #fff, inset 0 -102px 0 -35px #343434;
+	transform: none;
+	-webkit-transform: none;
 }
 
 .pokeball__button {
-	background: #ccc;
-	border: 1px solid #ddd;
+	background: #cecece;
+	border: 1px solid #ccc;
 	width: 20px;
 	height: 20px;
-	box-shadow: 0 0 0 5px #eee, 0 0 0 15px #333;
+	box-shadow: 0 0 0 8px #eee, 0 0 0 16px #343434;
 }
 
 @media screen and (max-width: 768px) {
@@ -262,27 +266,49 @@ body {
 	}
 }
 
-@-webkit-keyframes rotate {
-  from, to {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+@-webkit-keyframes wiggle {
+	20% {
+    -webkit-transform: rotate(7deg);
+		transform: rotate(7deg);
   }
-
-	to {
-		-webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-	}
+  40% {
+    -webkit-transform: rotate(-14deg);
+		transform: rotate(-14deg);
+  }
+  60% {
+    -webkit-transform: rotate(4deg);
+		transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+		transform: rotate(-2deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+  }
 }
 
-@keyframes rotate {
-	from, to {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+@keyframes wiggle {
+	20% {
+    -webkit-transform: rotate(7deg);
+		transform: rotate(7deg);
   }
-
-	to {
-		-webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-	}
+  40% {
+    -webkit-transform: rotate(-14deg);
+		transform: rotate(-14deg);
+  }
+  60% {
+    -webkit-transform: rotate(4deg);
+		transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+		transform: rotate(-2deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+  }
 }
 </style>
