@@ -1,13 +1,11 @@
-const store = window.localStorage
-const pokemonStoreLocal = 'v1::local::pokemon'
+export default {
+  local: 'v1::local::pokemon',
 
-let PokemonStore = {
   getPokemon () {
-    return store.getItem(pokemonStoreLocal)
+    return localStorage.getItem(this.local)
   },
+
   setPokemon (pokemon) {
-    store.setItem(pokemonStoreLocal, pokemon)
+    localStorage.setItem(this.local, pokemon)
   }
 }
-
-export default PokemonStore

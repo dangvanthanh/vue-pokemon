@@ -1,5 +1,5 @@
 var PokemonService = {
-  getPokemon: function getPokemon(offset, limit) {
+  getPokemon: function getPokemon (offset, limit) {
     var baseUrl = 'https://pokeapi.co/api/v2/pokemon/'
     var baseSpriteUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
 
@@ -18,15 +18,15 @@ var PokemonService = {
   }
 }
 
-var store = window.localStorage
-var pokemonStoreLocal = 'v1::local::pokemon'
-
 var PokemonStore = {
+  local: 'v1::local::pokemon',
+
   getPokemon: function getPokemon () {
-    return store.getItem(pokemonStoreLocal)
+    return localStorage.getItem(this.local)
   },
+
   setPokemon: function setPokemon (pokemon) {
-    store.setItem(pokemonStoreLocal, pokemon)
+    localStorage.setItem(this.local, pokemon)
   }
 }
 

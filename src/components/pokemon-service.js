@@ -1,5 +1,5 @@
-let PokemonService = {
-  getPokemon(offset, limit) {
+export default {
+  getPokemon (offset, limit) {
     const baseUrl = 'https://pokeapi.co/api/v2/pokemon/'
     const baseSpriteUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
 
@@ -17,5 +17,3 @@ let PokemonService = {
       }))
   }
 }
-
-export default PokemonService
