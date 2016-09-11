@@ -1,18 +1,31 @@
 <template>
-	<div class="pokemons" v-if="isLoadingPokeball">
-		<div class="pokemon__search">
-			<input type="text" name="name" class="pokemon__search-textfield" placeholder="Search by name or number" v-model="pokemonTerm" v-on:keyup="searchPokemon">
-		</div>
-		<div class="pokemon" v-for="p in pokemon">
-			<figure class="pokemon__sprite" v-bind:style="{ backgroundColor: p.swatches }">
-					<img v-bind:src="p.sprite">
-			</figure>
-			<div class="pokemon__content">
-				<p class="pokemon__id">{{ p.id | zeros }}</p>
-				<h2 class="pokemon__name">{{ p.name | capitalize }}</h2>
+	<header class="header" role="banner" v-if="isLoadingPokeball">
+		<div class="header__inner">
+			<div class="header__section">
+				<div class="header__logo">
+					<h1>Pokemon</h1>
+				</div>
+				<div class="pokemon__search">
+					<input type="text" name="name" class="pokemon__search-textfield" placeholder="Search by name or number" v-model="pokemonTerm" v-on:keyup="searchPokemon">
+				</div>
 			</div>
 		</div>
-	</div>
+	</header>
+	<main class="main" role="main" v-if="isLoadingPokeball">
+		<div class="container">
+			<div class="pokemons">
+				<div class="pokemon" v-for="p in pokemon">
+					<figure class="pokemon__sprite" v-bind:style="{ backgroundColor: p.swatches }">
+							<img v-bind:src="p.sprite">
+					</figure>
+					<div class="pokemon__content">
+						<p class="pokemon__id">{{ p.id | zeros }}</p>
+						<h2 class="pokemon__name">{{ p.name | capitalize }}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 	<div class="pokemons-loading" v-if="!isLoadingPokeball">
 		<div class="pokeball">
 			<div class="pokeball__button"></div>
@@ -21,8 +34,9 @@
 </template>
 
 <script>
-import PokemonService from './pokemon-service'
-import PokemonStore from './pokemon-store'
+import PokemonService from '../services/pokemon'
+import PokemonStore from '../store/pokemon'
+import { capitalize, zeros } from '../filters'
 
 export default {
   data () {
@@ -32,6 +46,10 @@ export default {
 			pokemonTerm: ''
     }
   },
+	filters: {
+		capitalize,
+		zeros
+	},
 	computed: {
 		isLoadingPokeball () {
 			return this.pokemonTemp.length > 0
@@ -98,7 +116,9 @@ export default {
 				self.pokemon = self.pokemonTemp
 			} else {
 				self.pokemon = self.pokemonTemp.filter((p) => {
-					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 || p.id.toString().indexOf(pokemonSearchTerm) > -1 || p.id == pokemonSearchTerm
+					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 ||
+								p.id.toString().indexOf(pokemonSearchTerm) > -1 ||
+								p.id == pokemonSearchTerm
 				})
 			}
 		},
@@ -111,7 +131,7 @@ export default {
 
 			ctx.drawImage(img, 0, 0, img.width, img.height)
 
-			return canvas.toDataURL()
+			return canvas.toDataURL('image/png')
 		},
 		getDataSwatchImage (img) {
 			let swatchColor = ''
@@ -141,7 +161,7 @@ export default {
 }
 
 body {
-	background-color: #edf3f7;
+	background-color: #f5f7f7;
 	color: #444;
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
@@ -149,22 +169,55 @@ body {
 	margin: 0;
 }
 
-.pokemons {
+.header {
+	background: #fff;
+}
+
+.header__inner {
+	display: flex;
+	justify-content: space-between;
+	width: 65em;
+	margin: 0 auto;
+}
+
+.header__section {
+	display: flex;
+	align-items: center;
+	padding: 0 0.78125%;
+}
+
+.header__logo h1 {
+	font-size: 21px;
+	font-weight: 700;
+	margin: 0;
+	line-height: 1.1;
+	margin: 10px 0;
+	text-transform: uppercase;
+}
+
+.container {
 	max-width: 65em;
 	margin: 0 auto;
 }
 
+.container:after,
 .pokemons:after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
+.main {
+	margin-top: 25px;
+}
+
 .pokemons-loading {
 	background: rgba(0, 0, 0, .9);
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
+	top: 0;
+	left: 0;
 }
 
 .pokemon {
@@ -209,16 +262,16 @@ body {
 }
 
 .pokemon__search {
-	margin: 1.5625% 0.78125%;
+	margin: 0 15px;
 }
 
 .pokemon__search-textfield {
-	padding: 0.78125% 1.5625%;
-	border-radius: 5px;
-	background: #c8d2d9;
+	padding: 7px 10px;
+	background: #f5f7f7;
+	border-radius: 3px;
 	font-size: 14px;
-	border: 1px solid transparent;
-	width: 100%;
+	border: 1px solid #efecec;
+	width: 200px;
 }
 
 .pokemon__search-textfield:hover,
@@ -237,14 +290,13 @@ body {
 }
 
 .pokeball {
-	/*background-image: linear-gradient(to bottom, #e62e34 48%, #343434 48%, #343434 54%, #cecece 54%);*/
 	background-color: #e62e34;
 	display: inline-block;
 	border: 8px solid #343434;
 	width: 150px;
 	height: 150px;
-	animation: 1s wiggle infinite ease-in-out;
-	-webkit-animation: 1s wiggle infinite ease-in-out;
+	animation: 3s scale infinite ease-in-out;
+	-webkit-animation: 3s scale infinite ease-in-out;
 	margin-left: -75px;
 	margin-top: -75px;
 	box-shadow: inset 0 -97px 0 -40px #fff, inset 0 -102px 0 -35px #343434;
@@ -266,49 +318,25 @@ body {
 	}
 }
 
-@-webkit-keyframes wiggle {
-	20% {
-    -webkit-transform: rotate(7deg);
-		transform: rotate(7deg);
-  }
-  40% {
-    -webkit-transform: rotate(-14deg);
-		transform: rotate(-14deg);
-  }
-  60% {
-    -webkit-transform: rotate(4deg);
-		transform: rotate(4deg);
-  }
-  80% {
-    -webkit-transform: rotate(-2deg);
-		transform: rotate(-2deg);
-  }
-  100% {
-    -webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-  }
+@-webkit-keyframes scale {
+	from {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	to {
+		-webkit-transform: scale(15);
+		transform: scale(15);
+	}
 }
 
-@keyframes wiggle {
-	20% {
-    -webkit-transform: rotate(7deg);
-		transform: rotate(7deg);
-  }
-  40% {
-    -webkit-transform: rotate(-14deg);
-		transform: rotate(-14deg);
-  }
-  60% {
-    -webkit-transform: rotate(4deg);
-		transform: rotate(4deg);
-  }
-  80% {
-    -webkit-transform: rotate(-2deg);
-		transform: rotate(-2deg);
-  }
-  100% {
-    -webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-  }
+@keyframes scale {
+	from {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	to {
+		-webkit-transform: scale(15);
+		transform: scale(15);
+	}
 }
 </style>

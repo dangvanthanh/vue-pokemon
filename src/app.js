@@ -1,8 +1,9 @@
+import Vue from 'vue'
+import VueResoure from 'vue-resource'
 import Pokemon from './components/Pokemon.vue'
-import { capitalize, zeros } from './filters'
 
-Vue.filter('capitalize', capitalize)
-Vue.filter('zeros', zeros)
+window.Vue = Vue
+Vue.use(VueResoure)
 
 const app = new Vue({
   el: 'body',
