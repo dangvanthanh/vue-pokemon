@@ -1,28 +1,27 @@
-import replace from 'rollup-plugin-replace'
-import commonjs from 'rollup-plugin-commonjs'
-import nodeResolve from 'rollup-plugin-node-resolve'
 import vue from 'rollup-plugin-vue'
 import buble from 'rollup-plugin-buble'
+import nodeResolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+import nodeGlobals from 'rollup-plugin-node-globals'
 import uglify from 'rollup-plugin-uglify'
-import { minify } from 'uglify-js'
 
 export default {
   entry: './src/app.js',
+  dest: './public/app.js',
   plugins: [
-    replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
     vue({
       css: './public/app.css'
     }),
-    buble(),
+    buble({
+      objectAssign: 'Object.assign'
+    }),
     nodeResolve({
-      jsnext: true
+      jsnext: true,
+      main: true,
+      browser: true
     }),
-    commonjs({
-      include: 'node_modules/**'
-    }),
-    uglify({}, minify)
-  ],
-  dest: './public/app.js'
+    commonjs(),
+    nodeGlobals(),
+    (process.env.NODE_ENV === 'production' && uglify())
+  ]
 }
