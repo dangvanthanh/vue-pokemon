@@ -7430,6 +7430,14 @@ var PokemonService = {
           sprite: ("" + baseSpriteUrl + id + ".png")
         }
       }); })
+  },
+
+  filterByNameOrId: function filterByNameOrId (lists, term) {
+    return lists.filter(function (item) {
+      return item.name.toLowerCase().indexOf(term) > -1 ||
+							item.id.toString().indexOf(term) > -1 ||
+							item.id == term
+    })
   }
 }
 
@@ -7530,11 +7538,7 @@ var Pokemon = {render: function(){with(this){return _h('div',{staticClass:"app"}
 			if (pokemonSearchTerm === '') {
 				self.pokemon = self.pokemonTemp
 			} else {
-				self.pokemon = self.pokemonTemp.filter(function (p) {
-					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 ||
-								p.id.toString().indexOf(pokemonSearchTerm) > -1 ||
-								p.id == pokemonSearchTerm
-				})
+				self.pokemon = PokemonService.filterByNameOrId(self.pokemonTemp, pokemonSearchTerm)
 			}
 		},
 		getDataUriImage: function getDataUriImage (img) {
@@ -7567,7 +7571,5 @@ var Pokemon = {render: function(){with(this){return _h('div',{staticClass:"app"}
 
 var app = new vue$1({
   el: '#app',
-  components: {
-    Pokemon: Pokemon
-  }
+  render: function (h) { return h(Pokemon); }
 })

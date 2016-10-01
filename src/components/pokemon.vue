@@ -117,11 +117,7 @@ export default {
 			if (pokemonSearchTerm === '') {
 				self.pokemon = self.pokemonTemp
 			} else {
-				self.pokemon = self.pokemonTemp.filter((p) => {
-					return p.name.toLowerCase().indexOf(pokemonSearchTerm) > -1 ||
-								p.id.toString().indexOf(pokemonSearchTerm) > -1 ||
-								p.id == pokemonSearchTerm
-				})
+				self.pokemon = PokemonService.filterByNameOrId(self.pokemonTemp, pokemonSearchTerm)
 			}
 		},
 		getDataUriImage (img) {

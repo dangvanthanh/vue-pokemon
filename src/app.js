@@ -3,7 +3,5 @@ import Pokemon from './components/Pokemon.vue'
 
 const app = new Vue({
   el: '#app',
-  components: {
-    Pokemon
-  }
+  render: h => h(Pokemon)
 })
