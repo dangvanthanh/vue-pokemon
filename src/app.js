@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue'
+import Vue from 'vue'
 import Pokemon from './components/Pokemon.vue'
 
 const app = new Vue({
