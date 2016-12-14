@@ -19,9 +19,7 @@ export default {
 
   filterByNameOrId (lists, term) {
     return lists.filter((item) => {
-      return item.name.toLowerCase().indexOf(term) > -1 ||
-							item.id.toString().indexOf(term) > -1 ||
-							item.id == term
+      return item.name.toLowerCase().indexOf(term) > -1 || item.id.toString().indexOf(term) > -1 || item.id === term
     })
   }
 }

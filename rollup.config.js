@@ -11,7 +11,7 @@ export default {
   dest: './public/app.js',
   plugins: [
     alias({
-      vue: 'node_modules/vue/dist/vue.js'
+      vue$: 'vue/dist/vue.common.js'
     }),
     vue({
       css: './public/app.css'
