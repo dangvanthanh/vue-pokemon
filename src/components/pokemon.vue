@@ -25,7 +25,6 @@
 								<img v-bind:src="p.sprite">
 						</figure>
 						<div class="pokemon__content">
-							<!-- <p class="pokemon__id">{{ p.id | zeros }}</p> -->
 							<h2 class="pokemon__name" v-bind:style="{ color: p.swatches }">{{ p.name | capitalizes }}</h2>
 						</div>
 					</div>
@@ -71,7 +70,7 @@ export default {
   methods: {
     getAllPokemon() {
       let self = this;
-      let currentPokemon = 2;
+      let currentPokemon = 6;
 
       PokemonService.getPokemon(0, currentPokemon)
         .then(self.getSwatches)
@@ -236,9 +235,9 @@ body {
 .pokemon__sprite {
   margin: 0;
   position: absolute;
-  right: 20px;
-  bottom: -20px;
-  max-width: 200px;
+  right: 15px;
+  bottom: -15px;
+  max-width: 180px;
 }
 
 .pokemon__sprite img {
