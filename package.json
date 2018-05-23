@@ -16,8 +16,6 @@
     "public": "poi build src/index.js --out-dir public && surge"
   },
   "devDependencies": {
-    "bili": "^3.1.2",
-    "node-vibrant": "^3.0.0",
     "poi": "^10.1.9"
   },
   "license": "MIT"
