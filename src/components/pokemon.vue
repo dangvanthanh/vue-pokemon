@@ -20,7 +20,7 @@
 			</div>
 			<div class="container" v-if="isLoadingPokeball">
 				<div class="pokemons">
-					<div class="pokemon" v-for="(p, i) in pokemon" :key="i">
+					<div class="shadow relative h-48 overflow-hidden" v-for="(p, i) in pokemon" :key="i">
 						<figure class="pokemon__sprite">
 								<img v-bind:src="p.sprite">
 						</figure>

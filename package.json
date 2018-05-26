@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "dev": "poi src/index.js",
-    "public": "poi build src/index.js --out-dir public && surge"
+    "public": "poi build src/index.js --out-dir public"
   },
   "devDependencies": {
     "poi": "^10.1.9"
